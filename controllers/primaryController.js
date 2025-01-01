@@ -3,6 +3,14 @@ const client = mqtt.connect("mqtt://localhost");
 
 const TEMPERATURE_TOPIC = "home/temperature";
 const HEATER_TOPIC = "home/heater/status";
+const CONTROLLER_HEALTH_TOPIC = "controller/health";
+
+function sendHealthSignal() {
+  client.publish(CONTROLLER_HEALTH_TOPIC, JSON.stringify({ status: "alive" }));
+  console.log("Controlador primário enviou sinal de vida");
+}
+
+setInterval(sendHealthSignal, 1000); // Envia sinal de vida a cada 5 segundos
 
 client.on("connect", () => {
   console.log("Controlador primário conectado ao broker MQTT");
